@@ -19,7 +19,7 @@ export default function OrderFlow() {
     const orderActiveRef = useRef(false);
 
     const initWebSocket = () => {
-        const ws = new WebSocket("wss://restaurant-backend-3897.onrender.com");
+        const ws = new WebSocket(process.env.NEXT_PUBLIC_SERVER_API);
 
         ws.onopen = () => {
             console.log("WebSocket connection established");
@@ -167,7 +167,7 @@ export default function OrderFlow() {
 
     const uploadToS3 = async (blob) => {
         try {
-            const response = await fetch("http://localhost:3000/api/upload-url");
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload-url`);
             const { uploadUrl, fileUrl } = await response.json();
             const uploadResponse = await fetch(uploadUrl, {
                 method: "PUT",
