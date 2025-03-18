@@ -19,7 +19,7 @@ export default function OrderFlow() {
     const orderActiveRef = useRef(false);
 
     const initWebSocket = () => {
-        const ws = new WebSocket("ws://localhost:3000");
+        const ws = new WebSocket("wss://restaurant-backend-3897.onrender.com");
 
         ws.onopen = () => {
             console.log("WebSocket connection established");
