@@ -25,7 +25,7 @@ export default function ConversationUI({ messages, orderDetails }) {
                                         className="rounded-full border shadow object-cover"
                                         alt="icon"
                                     />
-                                    <div className="bg-white rounded-xl shadow p-4 py-2.5 pb-3 font-bold break-keep text-2xl">
+                                    <div className="bg-white rounded-xl shadow p-4 py-2.5 pb-3 font-bold break-keep text-3xl">
                                         {msg.promptText}
                                     </div>
                                 </div>
@@ -33,7 +33,7 @@ export default function ConversationUI({ messages, orderDetails }) {
 
                             {msg.type === "transcript" && (
                                 <div className="flex space-x-2 items-start justify-end pb-4 pt-2 pl-16 w-full">
-                                    <div className="bg-black text-white rounded-xl text-2xl shadow p-4 py-2.5 pb-3 font-bold break-keep">
+                                    <div className="bg-black text-white rounded-xl text-3xl shadow p-4 py-2.5 pb-3 font-bold break-keep">
                                         {msg.transcript}
                                     </div>
                                     <Image
@@ -62,8 +62,8 @@ export default function ConversationUI({ messages, orderDetails }) {
                         alt="icon"
                     />
                     <div className="w-full max-w-lg bg-white p-4 rounded-lg shadow border-2">
-                        <h3 className="font-bold mb-4 text-lg">Order</h3>
-                        <table className="w-full table-auto text-2xl">
+                        <h3 className="font-bold mb-4 text-xl">Order</h3>
+                        <table className="w-full table-auto text-3xl">
                             <thead>
                                 <tr className="bg-gray-200">
                                     <th className="px-4 py-2">메뉴</th>
