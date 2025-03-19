@@ -1,6 +1,13 @@
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 export default function ConversationUI({ messages, orderDetails }) {
+    const bottomRef = useRef(null);
+
+    // Scroll to bottom whenever messages or orderDetails change
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages, orderDetails]);
 
     return (
         <div className="h-full flex flex-col w-full bg-neutral-100 p-4 text-black overflow-y-auto">
@@ -18,13 +25,17 @@ export default function ConversationUI({ messages, orderDetails }) {
                                         className="rounded-full border shadow object-cover"
                                         alt="icon"
                                     />
-                                    <div className="bg-white rounded-xl shadow p-4 py-2.5 pb-3 font-bold break-keep">{msg.promptText}</div>
+                                    <div className="bg-white rounded-xl shadow p-4 py-2.5 pb-3 font-bold break-keep text-2xl">
+                                        {msg.promptText}
+                                    </div>
                                 </div>
                             )}
 
                             {msg.type === "transcript" && (
                                 <div className="flex space-x-2 items-start justify-end pb-4 pt-2 pl-16 w-full">
-                                    <div className="bg-black text-white rounded-xl text-xs shadow p-4 py-2.5 pb-3 font-bold break-keep">{msg.transcript}</div>
+                                    <div className="bg-black text-white rounded-xl text-2xl shadow p-4 py-2.5 pb-3 font-bold break-keep">
+                                        {msg.transcript}
+                                    </div>
                                     <Image
                                         src="/user.png"
                                         width={30}
@@ -51,8 +62,8 @@ export default function ConversationUI({ messages, orderDetails }) {
                         alt="icon"
                     />
                     <div className="w-full max-w-lg bg-white p-4 rounded-lg shadow border-2">
-                        <h3 className="font-bold mb-4">Your Order</h3>
-                        <table className="w-full table-auto">
+                        <h3 className="font-bold mb-4 text-lg">Order</h3>
+                        <table className="w-full table-auto text-2xl">
                             <thead>
                                 <tr className="bg-gray-200">
                                     <th className="px-4 py-2">메뉴</th>
@@ -63,8 +74,20 @@ export default function ConversationUI({ messages, orderDetails }) {
                             <tbody>
                                 {orderDetails.items.map((item, idx) => (
                                     <tr key={idx} className="border-t">
-                                        <td className="px-4 py-2">{item.name}{item?.brand && `(${item.brand})`}</td>
-                                        <td className={`px-4 py-2 ${item.spiciness === "맵게" ? "font-bold text-red-600" : item.spiciness === "덜맵게" ? "text-red-400" : ""}`}>{item.spiciness}</td>
+                                        <td className="px-4 py-2">
+                                            {item.name}
+                                            {item?.brand && `(${item.brand})`}
+                                        </td>
+                                        <td
+                                            className={`px-4 py-2 ${item.spiciness === "맵게"
+                                                    ? "font-bold text-red-600"
+                                                    : item.spiciness === "덜맵게"
+                                                        ? "text-red-400"
+                                                        : ""
+                                                }`}
+                                        >
+                                            {item.spiciness}
+                                        </td>
                                         <td className="px-4 py-2">{item.quantity}</td>
                                     </tr>
                                 ))}
@@ -73,6 +96,9 @@ export default function ConversationUI({ messages, orderDetails }) {
                     </div>
                 </div>
             )}
+
+            {/* Dummy element to scroll into view */}
+            <div ref={bottomRef} />
         </div>
     );
 }

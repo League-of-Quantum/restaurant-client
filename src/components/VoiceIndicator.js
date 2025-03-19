@@ -3,12 +3,14 @@ import { useState, useEffect, useRef } from 'react';
 export default function VoiceIndicator() {
     const [amplitude, setAmplitude] = useState(1);
     const animationFrameId = useRef(null);
+    const streamRef = useRef(null);
 
     useEffect(() => {
         const setupAudio = async () => {
             try {
-                // Request microphone access
+                // Request microphone access and store the stream in ref
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                streamRef.current = stream;
                 const audioContext = new AudioContext();
                 const analyser = audioContext.createAnalyser();
                 const microphone = audioContext.createMediaStreamSource(stream);
@@ -25,7 +27,7 @@ export default function VoiceIndicator() {
                         sum += Math.abs(normalized);
                     }
                     const avg = sum / dataArray.length;
-                    // Normalize amplitude: 1 + (avg/128) for scaling outer circle
+                    // Normalize amplitude: 1 + (avg/32) for scaling outer circle
                     const newAmplitude = 1 + avg / 32;
                     setAmplitude(newAmplitude);
                     animationFrameId.current = requestAnimationFrame(updateAmplitude);
@@ -40,8 +42,13 @@ export default function VoiceIndicator() {
         setupAudio();
 
         return () => {
+            // Cancel the animation frame
             if (animationFrameId.current) {
                 cancelAnimationFrame(animationFrameId.current);
+            }
+            // Stop all audio tracks if stream exists
+            if (streamRef.current) {
+                streamRef.current.getTracks().forEach((track) => track.stop());
             }
         };
     }, []);

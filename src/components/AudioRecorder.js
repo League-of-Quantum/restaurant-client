@@ -63,14 +63,17 @@ export default function OrderFlow() {
                     }
                 } else if (data.type === "orderComplete") {
                     console.log("Order complete message received. Closing WebSocket.");
+                    autoRecordRef.current = false
+                    stopRecording()
+                    setOrderActive(false)
+                    orderActiveRef.current = false
+
                     // If the server includes order details, update the state.
                     if (data.order) {
                         setOrderDetails(data.order);
                     }
                     if (wsRef.current) {
                         wsRef.current.close();
-                        autoRecordRef.current = false;
-                        setOrderActive(false)
                     }
                 }
             } catch (error) {
@@ -184,7 +187,7 @@ export default function OrderFlow() {
 
     return (
         <div className="flex items-center justify-center h-full w-full">
-            <div className="w-3/5 h-full flex flex-col items-center justify-center flex-shrink-0">
+            <div className="w-1/2 h-full flex flex-col items-center justify-center flex-shrink-0">
                 {!orderActive ? (
                     <div className="flex flex-col items-center space-y-4">
                         <Image
@@ -196,7 +199,7 @@ export default function OrderFlow() {
                         />
                         <button
                             onClick={startOrder}
-                            className="px-12 py-6 pb-8 bg-blue-500 text-white rounded-lg mb-4 text-6xl font-bold"
+                            className="px-14 py-8 pb-10 bg-blue-500 text-white rounded-lg mb-4 text-7xl font-bold"
                         >
                             주문하기
                         </button>
