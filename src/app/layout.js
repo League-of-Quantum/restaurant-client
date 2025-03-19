@@ -37,6 +37,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${orbit.className} antialiased`}
       >
+        <header></header>
         {children}
       </body>
     </html>
